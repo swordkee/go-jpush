@@ -1,9 +1,9 @@
 package jpush
 
 import (
+	"bytes"
 	"encoding/json"
 	"strconv"
-	"bytes"
 )
 
 func (c *Client) Push(push *PushRequest) (map[string]interface{}, error) {
@@ -50,6 +50,19 @@ func (c *Client) GroupPush(push *PushRequest) (map[string]interface{}, error) {
 func (c *Client) Validate(req *PushRequest) (map[string]interface{}, error) {
 	link := c.pushUrl + "/v3/push/validate"
 	buf, err := json.Marshal(req)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := c.request("POST", link, bytes.NewReader(buf), false)
+	if err != nil {
+		return nil, err
+	}
+	return resp.Map()
+}
+
+func (c *Client) PushSingle(push *PushSingleRequest) (map[string]interface{}, error) {
+	link := c.pushUrl + "/v3/push/batch/regid/single"
+	buf, err := json.Marshal(push)
 	if err != nil {
 		return nil, err
 	}

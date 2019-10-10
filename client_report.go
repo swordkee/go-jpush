@@ -1,10 +1,10 @@
 package jpush
 
 import (
-	"strings"
+	"bytes"
 	"encoding/json"
 	"errors"
-	"bytes"
+	"strings"
 )
 
 func (c *Client) ReportReceived(msgIds []string) ([]interface{}, error) {
@@ -12,6 +12,19 @@ func (c *Client) ReportReceived(msgIds []string) ([]interface{}, error) {
 		return nil, errors.New("msgIds不能为空")
 	}
 	link := c.reportUrl + "/v3/received?msg_ids=" + strings.Join(msgIds, ",")
+	resp, err := c.request("GET", link, nil, false)
+	if err != nil {
+		return nil, err
+	}
+	return resp.Array()
+}
+
+//vip
+func (c *Client) ReportReceivedDetail(msgIds []string) ([]interface{}, error) {
+	if len(msgIds) == 0 {
+		return nil, errors.New("msgIds不能为空")
+	}
+	link := c.reportUrl + "/v3/received/detail?msg_ids=" + strings.Join(msgIds, ",")
 	resp, err := c.request("GET", link, nil, false)
 	if err != nil {
 		return nil, err
@@ -30,4 +43,30 @@ func (c *Client) ReportStatusMessage(req *ReportStatusRequest) (map[string]inter
 		return nil, err
 	}
 	return resp.Map()
+}
+
+//vip
+func (c *Client) ReportMessages(msgIds []string) ([]interface{}, error) {
+	if len(msgIds) == 0 {
+		return nil, errors.New("msgIds不能为空")
+	}
+	link := c.reportUrl + "/v3/messages?msg_ids=" + strings.Join(msgIds, ",")
+	resp, err := c.request("GET", link, nil, false)
+	if err != nil {
+		return nil, err
+	}
+	return resp.Array()
+}
+
+//vip
+func (c *Client) ReportMessagesDetail(msgIds []string) ([]interface{}, error) {
+	if len(msgIds) == 0 {
+		return nil, errors.New("msgIds不能为空")
+	}
+	link := c.reportUrl + "/v3/messages/detail?msg_ids=" + strings.Join(msgIds, ",")
+	resp, err := c.request("GET", link, nil, false)
+	if err != nil {
+		return nil, err
+	}
+	return resp.Array()
 }

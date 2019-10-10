@@ -3,6 +3,7 @@ package jpush
 import "encoding/json"
 
 type Platform string
+type Target string
 
 const (
 	PlatformAndroid  Platform = "android"
@@ -79,6 +80,16 @@ type PushOptions struct {
 	BigPushDuration int    `json:"big_push_duration,int,omitempty"`
 }
 
+type PushList struct {
+	Cid struct {
+		Platform     Platform          `json:"platform"`
+		Target       Target            `json:"target"`
+		Notification *PushNotification `json:"notification,omitempty"`
+		Message      *PushMessage      `json:"message,omitempty"`
+		SmsMessage   *SmsMessage       `json:"sms_message,omitempty"`
+		Options      *PushOptions      `json:"options,omitempty"`
+	}
+}
 type PushRequest struct {
 	Cid          string            `json:"cid,omitempty"`
 	Platform     Platform          `json:"platform"`
@@ -87,6 +98,10 @@ type PushRequest struct {
 	Message      *PushMessage      `json:"message,omitempty"`
 	SmsMessage   *SmsMessage       `json:"sms_message,omitempty"`
 	Options      *PushOptions      `json:"options,omitempty"`
+}
+
+type PushSingleRequest struct {
+	PushList PushList
 }
 
 type Response struct {
