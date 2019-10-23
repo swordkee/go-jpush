@@ -29,17 +29,19 @@ type PushNotification struct {
 }
 
 type NotificationAndroid struct {
-	Alert      string                 `json:"alert"`
-	Title      string                 `json:"title,omitempty"`
-	BuilderId  int                    `json:"builder_id,int,omitempty"`
-	Priority   int                    `json:"priority,omitempty"`
-	Category   string                 `json:"category,omitempty"`
-	Style      int                    `json:"style,int,omitempty"`
-	AlertType  int                    `json:"alert_type,int,omitempty"`
-	BigText    string                 `json:"big_text,omitempty"`
-	Inbox      map[string]interface{} `json:"inbox,omitempty"`
-	BigPicPath string                 `json:"big_pic_path,omitempty"`
-	Extras     map[string]interface{} `json:"extras,omitempty"`
+	Alert       string                 `json:"alert"`
+	Title       string                 `json:"title,omitempty"`
+	BuilderId   int                    `json:"builder_id,int,omitempty"`
+	Priority    int                    `json:"priority,omitempty"`
+	Category    string                 `json:"category,omitempty"`
+	Style       int                    `json:"style,int,omitempty"`
+	AlertType   int                    `json:"alert_type,int,omitempty"`
+	BigText     string                 `json:"big_text,omitempty"`
+	Inbox       map[string]interface{} `json:"inbox,omitempty"`
+	BigPicPath  string                 `json:"big_pic_path,omitempty"`
+	Extras      map[string]interface{} `json:"extras,omitempty"`
+	UriActivity string                 `json:"uri_activity,omitempty"` // 兼容华为
+	UriAction   string                 `json:"uri_action,omitempty"`   //兼容小米
 }
 
 type NotificationIOS struct {
