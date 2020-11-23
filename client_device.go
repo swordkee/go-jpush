@@ -1,9 +1,9 @@
 package jpush
 
 import (
+	"bytes"
 	"encoding/json"
 	"strings"
-	"bytes"
 )
 
 func (c *Client) DeviceView(registrationId string) (map[string]interface{}, error) {
@@ -41,6 +41,21 @@ func (c *Client) DeviceEmptyTagsRequest(registrationId string, req *DeviceSettin
 	return resp.Bytes(), nil
 }
 
+//vip
+func (c *Client) DeviceGetUserStatus(req []string) (map[string]interface{}, error) {
+	link := c.deviceUrl + "/v3/devices/status/"
+	params := make(map[string]interface{})
+	params["registration_ids"] = req
+	buf, err := json.Marshal(params)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := c.request("POST", link, bytes.NewReader(buf), false)
+	if err != nil {
+		return nil, err
+	}
+	return resp.Map()
+}
 func (c *Client) DeviceGetWithAlias(alias string, platforms []string) (map[string]interface{}, error) {
 	link := c.deviceUrl + "/v3/aliases/" + alias
 	if len(platforms) > 0 {
@@ -52,7 +67,20 @@ func (c *Client) DeviceGetWithAlias(alias string, platforms []string) (map[strin
 	}
 	return resp.Map()
 }
-
+func (c *Client) DeviceRemoveBindAlias(alias string, req *DeviceSettingRequestAlias) ([]byte, error) {
+	link := c.deviceUrl + "/v3/aliases/" + alias
+	params := make(map[string]interface{})
+	params["registration_ids"] = req
+	buf, err := json.Marshal(params)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := c.request("POST", link, bytes.NewReader(buf), false)
+	if err != nil {
+		return nil, err
+	}
+	return resp.Bytes(), nil
+}
 func (c *Client) DeviceDeleteAlias(alias string) ([]byte, error) {
 	link := c.deviceUrl + "/v3/aliases/" + alias
 	resp, err := c.request("DELETE", link, nil, false)

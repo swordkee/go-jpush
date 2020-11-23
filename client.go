@@ -1,18 +1,19 @@
 package jpush
 
 import (
-	"fmt"
 	"encoding/base64"
-	"runtime"
-	"net/http"
-	"io/ioutil"
+	"fmt"
 	"io"
+	"io/ioutil"
+	"net/http"
+	"runtime"
 )
 
 type Client struct {
 	AppKey       string
 	MasterSecret string
 	pushUrl      string
+	adminUrl     string
 	reportUrl    string
 	deviceUrl    string
 }
@@ -22,6 +23,7 @@ func NewClient(appKey, masterSecret string) *Client {
 	client.pushUrl = "https://api.jpush.cn"
 	client.reportUrl = "https://report.jpush.cn"
 	client.deviceUrl = "https://device.jpush.cn"
+	client.adminUrl = "https://admin.jpush.cn"
 	return client
 }
 

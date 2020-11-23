@@ -1,19 +1,21 @@
 package jpush
 
 import (
-	"testing"
+	"log"
 	"os"
+	"testing"
 )
 
 var client = NewClient(os.Getenv("APP_KEY"), os.Getenv("MASTER_SECRET"))
+
 var registrationId = os.Getenv("REGISTRATION_ID")
 
 func getMsg() *PushRequest {
 	params := make(map[string]interface{})
 	params["url"] = "https://www.jpush.cn"
 	req := &PushRequest{
-		Cid:      "f005f301ce83fa605a832fb2-56773c24-f933-44cb-aadc-0e154be7fcbb",
-		Platform: PlatformAndroid,
+		//Cid:      "f005f301ce83fa605a832fb2-56773c24-f933-44cb-aadc-0e154be7fcbb",
+		Platform: "all",
 		Audience: &PushAudience{
 			RegistrationId: []string{registrationId},
 		},
@@ -26,12 +28,29 @@ func getMsg() *PushRequest {
 				AlertType: 7,
 				Extras:    params,
 			},
+			IOS: &NotificationIOS{
+				Alert:            "alert",
+				Sound:            "",
+				Badge:            0,
+				ContentAvailable: false,
+				MutableContent:   false,
+				Category:         "",
+				Extras:           params,
+				ThreadId:         "",
+			},
+			QuickApp: &NotificationQuickApp{
+				Title:  "111",
+				Alert:  "22",
+				Page:   "333",
+				Extras: params,
+			},
 		},
 		Options: &PushOptions{
 			TimeToLive:     60,
 			ApnsCollapseId: "jiguang_test_201706011100",
 		},
 	}
+	log.Println(req)
 	return req
 }
 
@@ -249,6 +268,14 @@ func TestClientScheduleUpdate(t *testing.T) {
 
 func TestClientScheduleDelete(t *testing.T) {
 	result, err := client.ScheduleDelete("18785f08-c03b-11e7-be12-f8fa30f97302")
+	if err != nil {
+		t.Error(err)
+		return
+	}
+	t.Log(result)
+}
+func TestClientDevicesStatus(t *testing.T) {
+	result, err := client.DeviceGetUserStatus([]string{"1104a8979215a3f999a"})
 	if err != nil {
 		t.Error(err)
 		return

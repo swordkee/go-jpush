@@ -70,3 +70,31 @@ func (c *Client) ReportMessagesDetail(msgIds []string) ([]interface{}, error) {
 	}
 	return resp.Array()
 }
+
+func (c *Client) ReportGetUsers(timeUnit, start, duration string) ([]interface{}, error) {
+	link := c.reportUrl + "/v3/users?time_unit=" + timeUnit + "&start" + start + "&duration" + duration
+	resp, err := c.request("GET", link, nil, false)
+	if err != nil {
+		return nil, err
+	}
+	return resp.Array()
+}
+func (c *Client) ReportGetGroupMessages(msgIds []string) ([]interface{}, error) {
+	if len(msgIds) == 0 {
+		return nil, errors.New("msgIds不能为空")
+	}
+	link := c.reportUrl + "/v3/group/messages/detail?group_msgids=" + strings.Join(msgIds, ",")
+	resp, err := c.request("GET", link, nil, false)
+	if err != nil {
+		return nil, err
+	}
+	return resp.Array()
+}
+func (c *Client) ReportGetGroup(timeUnit, start, duration string) ([]interface{}, error) {
+	link := c.reportUrl + "/v3/group/users/time_unit=" + timeUnit + "&start" + start + "&duration" + duration
+	resp, err := c.request("GET", link, nil, false)
+	if err != nil {
+		return nil, err
+	}
+	return resp.Array()
+}

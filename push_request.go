@@ -9,6 +9,7 @@ const (
 	PlatformAndroid  Platform = "android"
 	PlatformIOS      Platform = "ios"
 	PlatformWinPhone Platform = "winphone"
+	PlatformQuickApp Platform = "quickapp"
 )
 
 type PushAudience struct {
@@ -25,23 +26,34 @@ type PushNotification struct {
 	Alert    string                `json:"alert,omitempty"`
 	Android  *NotificationAndroid  `json:"android,omitempty"`
 	IOS      *NotificationIOS      `json:"ios,omitempty"`
+	VIOS     *NotificationVIOS     `json:"vios,omitempty"`
 	WinPhone *NotificationWinPhone `json:"winphone,omitempty"`
+	QuickApp *NotificationQuickApp `json:"quickapp,omitempty"`
 }
 
 type NotificationAndroid struct {
-	Alert       string                 `json:"alert"`
-	Title       string                 `json:"title,omitempty"`
-	BuilderId   int                    `json:"builder_id,int,omitempty"`
-	Priority    int                    `json:"priority,omitempty"`
-	Category    string                 `json:"category,omitempty"`
-	Style       int                    `json:"style,int,omitempty"`
-	AlertType   int                    `json:"alert_type,int,omitempty"`
-	BigText     string                 `json:"big_text,omitempty"`
-	Inbox       map[string]interface{} `json:"inbox,omitempty"`
-	BigPicPath  string                 `json:"big_pic_path,omitempty"`
-	Extras      map[string]interface{} `json:"extras,omitempty"`
-	UriActivity string                 `json:"uri_activity,omitempty"` // 兼容华为
-	UriAction   string                 `json:"uri_action,omitempty"`   //兼容小米
+	Alert             string                 `json:"alert"`
+	Title             string                 `json:"title,omitempty"`
+	BuilderId         int                    `json:"builder_id,int,omitempty"`
+	ChannelId         int                    `json:"channel_id,int,omitempty"`
+	Priority          int                    `json:"priority,omitempty"`
+	Category          string                 `json:"category,omitempty"`
+	Style             int                    `json:"style,int,omitempty"`
+	AlertType         int                    `json:"alert_type,int,omitempty"`
+	BigText           string                 `json:"big_text,omitempty"`
+	Inbox             map[string]interface{} `json:"inbox,omitempty"`
+	BigPicPath        string                 `json:"big_pic_path,omitempty"`
+	Extras            map[string]interface{} `json:"extras,omitempty"`
+	LargeIcon         string                 `json:"large_icon,omitempty"`
+	Intent            map[string]interface{} `json:"intent,omitempty"`
+	UriActivity       string                 `json:"uri_activity,omitempty"` // 兼容华为
+	UriAction         string                 `json:"uri_action,omitempty"`   //兼容小米
+	BadgeAddNum       int                    `json:"badge_add_num,int,omitempty"`
+	BadgeClass        string                 `json:"badge_class,omitempty"`
+	Sound             string                 `json:"sound,omitempty"`
+	ShowBeginTime     string                 `json:"show_begin_time,omitempty"`
+	ShowEndTime       string                 `json:"show_end_time,omitempty"`
+	DisplayForeground string                 `json:"display_foreground,omitempty"`
 }
 
 type NotificationIOS struct {
@@ -52,8 +64,18 @@ type NotificationIOS struct {
 	MutableContent   bool                   `json:"mutable-content,omitempty"`
 	Category         string                 `json:"category,omitempty"`
 	Extras           map[string]interface{} `json:"extras,omitempty"`
+	ThreadId         string                 `json:"thread-id,omitempty"`
+}
+type NotificationVIOS struct {
+	Key string `json:"key,omitempty"`
 }
 
+type NotificationQuickApp struct {
+	Title  string                 `json:"title,omitempty"`
+	Alert  string                 `json:"alert"`
+	Page   string                 `json:"page,omitempty"`
+	Extras map[string]interface{} `json:"extras,omitempty"`
+}
 type NotificationWinPhone struct {
 	Alert    string                 `json:"alert"`
 	Title    string                 `json:"title,omitempty"`
@@ -69,17 +91,22 @@ type PushMessage struct {
 }
 
 type SmsMessage struct {
-	Content   string `json:"content"`
-	DelayTime int    `json:"delay_time,int,omitempty"`
+	Content      string `json:"content"`
+	DelayTime    int    `json:"delay_time,int,omitempty"`
+	SignId       int    `json:"signid,int,omitempty"`
+	TempId       int64  `json:"temp_id,long,omitempty"`
+	TempPara     string `json:"temp_para,long,omitempty"`
+	ActiveFilter bool   `json:"active_filter,bool,omitempty"`
 }
 
 type PushOptions struct {
-	SendNo          int    `json:"sendno,int,omitempty"`
-	TimeToLive      int    `json:"time_to_live,int,omitempty"`
-	OverrideMsgId   int64  `json:"override_msg_id,int64,omitempty"`
-	ApnsProduction  bool   `json:"apns_production"`
-	ApnsCollapseId  string `json:"apns_collapse_id,omitempty"`
-	BigPushDuration int    `json:"big_push_duration,int,omitempty"`
+	SendNo            int                    `json:"sendno,int,omitempty"`
+	TimeToLive        int                    `json:"time_to_live,int,omitempty"`
+	OverrideMsgId     int64                  `json:"override_msg_id,int64,omitempty"`
+	ApnsProduction    bool                   `json:"apns_production"`
+	ApnsCollapseId    string                 `json:"apns_collapse_id,omitempty"`
+	BigPushDuration   int                    `json:"big_push_duration,int,omitempty"`
+	ThirdPartyChannel map[string]interface{} `json:"third_party_channel,omitempty"`
 }
 
 type PushList struct {

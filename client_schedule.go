@@ -1,8 +1,8 @@
 package jpush
 
 import (
-	"encoding/json"
 	"bytes"
+	"encoding/json"
 	"strconv"
 )
 
@@ -39,7 +39,14 @@ func (c *Client) ScheduleView(id string) (map[string]interface{}, error) {
 	}
 	return resp.Map()
 }
-
+func (c *Client) ScheduleViewMsgId(id string) (map[string]interface{}, error) {
+	link := c.pushUrl + "/v3/schedules/" + id + "/msg_ids"
+	resp, err := c.request("GET", link, nil, false)
+	if err != nil {
+		return nil, err
+	}
+	return resp.Map()
+}
 func (c *Client) ScheduleUpdate(id string, req *ScheduleRequest) (map[string]interface{}, error) {
 	link := c.pushUrl + "/v3/schedules/" + id
 	buf, err := json.Marshal(req)
